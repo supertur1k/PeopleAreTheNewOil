@@ -9,7 +9,7 @@
 <body>
     <h1>Вход на сайт</h1>
     {% if error %}
-        <div style="color:red;">{{ error }}</div>
+        <div style="color:#ff0000;">{{ error }}</div>
     {% endif %}
     <form method="post">
         {% csrf_token %}
