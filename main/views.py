@@ -8,9 +8,6 @@ from django.contrib.auth.models import User
 def home(request):
     return render(request, 'home.html')
 
-def login(request):
-    return render(request, 'login.html')
-
 def master(request):
     return render(request, 'master.html')
 
@@ -27,7 +24,7 @@ class LoginView(TemplateView):
             password = request.POST['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                login(request)
+                login(request, user)
                 return redirect(reverse("profile"))
             else:
                 context['error'] = "Логин или пароль неправильные"
@@ -35,6 +32,9 @@ class LoginView(TemplateView):
 
 class ProfilePage(TemplateView):
     template_name = "profile.html"
+
+class TestPage(TemplateView):
+    template_name = "slave.html"
 
 class RegisterView(TemplateView):
     template_name = "register.html"
