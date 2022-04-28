@@ -25,7 +25,7 @@ class LoginView(TemplateView):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                if user.groups.filter(name='Master').exists():
+                if user.groups.all()[0].name == "Master":
                     return redirect(reverse("profile-master"))
                 else:
                     return redirect(reverse("profile"))
