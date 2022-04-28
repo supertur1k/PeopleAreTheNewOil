@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 def home(request):
     return render(request, 'home.html')
@@ -14,11 +15,13 @@ def master(request):
 def slave(request):
     return render(request, 'slave.html')
 
-def master_profile(request):
-    return render(request, 'profile-master.html')
-
 def slave_profile(request):
     return render(request, 'profile.html')
+
+def master_profile(request):
+    all_users = User.objects.filter(groups__name='Slaves').values()
+    res = {"Name" : all_users}
+    return render(request, "profile-master.html", context=res)
 
 class LoginView(TemplateView):
     template_name = "login.html"
@@ -61,3 +64,12 @@ class RegisterView(TemplateView):
                 return redirect(reverse("login"))
 
         return render(request, self.template_name)
+
+
+def get_slaves():
+    users = get_user_model().objects.all()
+    result = []
+    for elem in users:
+        if user.groups.all()[0].name == "Slaves":
+            result.append(elem)
+    return result

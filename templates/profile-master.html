@@ -13,5 +13,8 @@
     Email: {{ user.email }}
 
     <h1>Мои работники:</h1>
+    {% for elem in Name %}
+        <h1>{{ elem.username }}</h1>
+    {% endfor %}
 </body>
 </html>
