@@ -7,16 +7,15 @@
     <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
 </head>
 <body>
-    <h1>Введите логин и пароль</h1>
-    <form name="test" method="post" action="input1.php">
-        <p><b>Логин:</b><br>
-        <input type="text" size="40">
-        </p>
-        <p><b>Пароль:</b><br>
-        <input type="text" size="40">
-        </p>
-        <p><input type="submit" value="Отправить">
-        <input type="reset" value="Очистить"></p>
+    <h1>Вход на сайт</h1>
+    {% if error %}
+        <div style="color:red;">{{ error }}</div>
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Логин">
+        <input type="password" name="password" placeholder="Пароль">
+        <input type="submit" value="Войти">
     </form>
 </body>
 </html>

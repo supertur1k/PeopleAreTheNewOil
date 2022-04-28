@@ -34,7 +34,7 @@ class LoginView(TemplateView):
         return render(request, self.template_name, context)
 
 class ProfilePage(TemplateView):
-    template_name = "slave.html"
+    template_name = "profile.html"
 
 class RegisterView(TemplateView):
     template_name = "register.html"
