@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Страница работника</title>
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
+</head>
+<body>
+<h1>Заполните форму!</h1>
+    <form name="test" method="post" action="input1.php">
+        <p><b>Обычные обязанности напрягают меня больше чем обычно?</b><Br>
+            <input type="radio" name="1" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="1" value="1"> Скорее неверно<Br>
+            <input type="radio" name="1" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="1" value="3"> Скорее верно<Br>
+            <input type="radio" name="1" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я чувствую, что многие на работе открыто конкурируют со мной.</b><Br>
+            <input type="radio" name="2" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="2" value="1"> Скорее неверно<Br>
+            <input type="radio" name="2" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="2" value="3"> Скорее верно<Br>
+            <input type="radio" name="2" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Могу и накричать. Потом стыдно. Раньше так не было.</b><Br>
+            <input type="radio" name="3" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="3" value="1"> Скорее неверно<Br>
+            <input type="radio" name="3" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="3" value="3"> Скорее верно<Br>
+            <input type="radio" name="3" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я боюсь все испортить в работе и всех подвести.</b><Br>
+            <input type="radio" name="4" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="4" value="1"> Скорее неверно<Br>
+            <input type="radio" name="4" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="4" value="3"> Скорее верно<Br>
+            <input type="radio" name="4" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Выполняю работу как робот, иногда не могу остановиться.</b><Br>
+            <input type="radio" name="5" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="5" value="1"> Скорее неверно<Br>
+            <input type="radio" name="5" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="5" value="3"> Скорее верно<Br>
+            <input type="radio" name="5" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Меня напрягает, если надо выполнять работу вместе с кем-то.</b><Br>
+            <input type="radio" name="6" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="6" value="1"> Скорее неверно<Br>
+            <input type="radio" name="6" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="6" value="3"> Скорее верно<Br>
+            <input type="radio" name="6" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Меня не радует проделанная работа.</b><Br>
+            <input type="radio" name="7" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="7" value="1"> Скорее неверно<Br>
+            <input type="radio" name="7" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="7" value="3"> Скорее верно<Br>
+            <input type="radio" name="7" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>В последнее время, мне часто приходится оправдываться за свою неадекватную реакцию.</b><Br>
+            <input type="radio" name="8" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="8" value="1"> Скорее неверно<Br>
+            <input type="radio" name="8" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="8" value="3"> Скорее верно<Br>
+            <input type="radio" name="8" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я чувствую себя колхозной лошадью, которая работает больше всех и никогда не станет председателем.</b><Br>
+            <input type="radio" name="9" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="9" value="1"> Скорее неверно<Br>
+            <input type="radio" name="9" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="9" value="3"> Скорее верно<Br>
+            <input type="radio" name="9" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я чувствую, что отвечаю на вопросы случайным образом.</b><Br>
+            <input type="radio" name="check" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="check" value="1"> Скорее неверно<Br>
+            <input type="radio" name="check" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="check" value="3"> Скорее верно<Br>
+            <input type="radio" name="check" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>В последнее время я не очень охотно присоединяюсь к эмоциям других.</b><Br>
+            <input type="radio" name="10" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="10" value="1"> Скорее неверно<Br>
+            <input type="radio" name="10" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="10" value="3"> Скорее верно<Br>
+            <input type="radio" name="10" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Мне стало проще сделать все самостоятельно, чем просить кого-то.</b><Br>
+            <input type="radio" name="11" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="11" value="1"> Скорее неверно<Br>
+            <input type="radio" name="11" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="11" value="3"> Скорее верно<Br>
+            <input type="radio" name="11" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>У меня такое чувство, что мой организм предательски активно протестует против моего режима работы и старается выбить меня из колеи.</b><Br>
+            <input type="radio" name="12" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="12" value="1"> Скорее неверно<Br>
+            <input type="radio" name="12" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="12" value="3"> Скорее верно<Br>
+            <input type="radio" name="12" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Меня чаще стало тревожить, правильно ли я выполняю работу.</b><Br>
+            <input type="radio" name="13" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="13" value="1"> Скорее неверно<Br>
+            <input type="radio" name="13" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="13" value="3"> Скорее верно<Br>
+            <input type="radio" name="13" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>У меня нет сил ни с кем общаться на работе, делиться своими новостями, печалями и радостями.</b><Br>
+            <input type="radio" name="14" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="14" value="1"> Скорее неверно<Br>
+            <input type="radio" name="14" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="14" value="3"> Скорее верно<Br>
+            <input type="radio" name="14" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я постоянно чувствую себя уставшим.</b><Br>
+            <input type="radio" name="15" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="15" value="1"> Скорее неверно<Br>
+            <input type="radio" name="15" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="15" value="3"> Скорее верно<Br>
+            <input type="radio" name="15" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я становлюсь нечувствительным к проблемам и страданиям других.</b><Br>
+            <input type="radio" name="16" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="16" value="1"> Скорее неверно<Br>
+            <input type="radio" name="16" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="16" value="3"> Скорее верно<Br>
+            <input type="radio" name="16" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я буквально заставляю себя каждый день идти на работу.</b><Br>
+            <input type="radio" name="17" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="17" value="1"> Скорее неверно<Br>
+            <input type="radio" name="17" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="17" value="3"> Скорее верно<Br>
+            <input type="radio" name="17" value="4"> Совершенно верно<Br>
+        </p>
+        <p><b>Я все принимаю близко к сердцу.</b><Br>
+            <input type="radio" name="18" value="0"> Совершенно неверно<Br>
+            <input type="radio" name="18" value="1"> Скорее неверно<Br>
+            <input type="radio" name="18" value="2"> Точно не могу сказать<Br>
+            <input type="radio" name="18" value="3"> Скорее верно<Br>
+            <input type="radio" name="18" value="4"> Совершенно верно<Br>
+        </p>
+        <p>Комментарий<Br>
+        <textarea name="comment" cols="40" rows="3"></textarea></p>
+        <p><input type="submit" value="Отправить">
+        <input type="reset" value="Очистить"></p>
+    </form>
+</body>
+</html>

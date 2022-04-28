@@ -1,0 +1,22 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
+</head>
+<body>
+    <h1>Введите логин и пароль</h1>
+    <form name="test" method="post" action="input1.php">
+        <p><b>Логин:</b><br>
+        <input type="text" size="40">
+        </p>
+        <p><b>Пароль:</b><br>
+        <input type="text" size="40">
+        </p>
+        <p><input type="submit" value="Отправить">
+        <input type="reset" value="Очистить"></p>
+    </form>
+</body>
+</html>
