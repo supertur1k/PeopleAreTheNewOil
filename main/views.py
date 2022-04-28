@@ -14,6 +14,12 @@ def master(request):
 def slave(request):
     return render(request, 'slave.html')
 
+def master_profile(request):
+    return render(request, 'profile-master.html')
+
+def slave_profile(request):
+    return render(request, 'profile.html')
+
 class LoginView(TemplateView):
     template_name = "login.html"
 
@@ -24,10 +30,11 @@ class LoginView(TemplateView):
             password = request.POST['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                login(request, user)
                 if user.groups.all()[0].name == "Master":
+                    login(request, user)
                     return redirect(reverse("profile-master"))
                 else:
+                    login(request, user)
                     return redirect(reverse("profile"))
             else:
                 context['error'] = "Логин или пароль неправильные"
