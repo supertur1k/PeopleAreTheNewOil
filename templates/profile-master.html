@@ -11,6 +11,7 @@
 
     Имя пользователя: {{ user.username }} <br>
     Email: {{ user.email }}
+    <a href="{% url 'logout' %}">Выйти</a>
 
     <h1>Мои работники:</h1>
     {% for elem in Name %}
