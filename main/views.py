@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as django_logout
 from django.views.generic import TemplateView
 from django.urls import reverse
 from django.contrib.auth.models import User
@@ -35,16 +36,17 @@ class LoginView(TemplateView):
             if user is not None:
                 if user.groups.all()[0].name == "Master":
                     login(request, user)
-                    return redirect(reverse("profile-master"))
+                    user.is_staff = True
                 else:
                     login(request, user)
-                    return redirect(reverse("profile"))
+                return render(request, 'home.html')
             else:
                 context['error'] = "Логин или пароль неправильные"
         return render(request, self.template_name, context)
 
-class LogoutView(TemplateView):
-    template_name = "logout.html"
+def logout(request):
+    django_logout(request)
+    return render(request, 'logout.html')
 
 class ProfilePage(TemplateView):
     template_name = "profile.html"
