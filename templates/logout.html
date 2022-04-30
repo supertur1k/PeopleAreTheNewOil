@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
+    <script type="text/JavaScript">
+
+    function doRedirect() {
+        atTime = "3000";
+        toUrl = "http://127.0.0.1:8000/";
+
+        setTimeout("location.href = toUrl;", atTime);
+    }
+    </script>
+</head>
+<body onload="doRedirect();">
+    {% block title %}Logged out{% endblock %}
+    {% block content %}
+    <p>You have been successfully logged out.</p>
+    {% endblock %}
+
+</body>
+</html>
