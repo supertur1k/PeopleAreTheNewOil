@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Questions(models.Model):
-    id = models.CharField(max_length=200, primary_key=True)
-    factor = models.CharField(max_length=200)
-    value = models.CharField(max_length=200)
+    worker_id = models.CharField(max_length=200, primary_key=True)
+    factor = models.CharField(max_length=200)     # Показатель состояния работника
+    value = models.CharField(max_length=200)      # Значение показателя
     date = models.DateTimeField('date published')
