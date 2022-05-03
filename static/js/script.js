@@ -1,7 +1,6 @@
 let testQuestion = "Я чувствую, что отвечаю на вопросы случайным образом."
 var clientAns = []
-document.addEventListener('DOMContentLoaded', function(){
-    let questions = ["Обычные обязанности напрягают меня больше чем обычно?",
+var questions = ["Обычные обязанности напрягают меня больше чем обычно?",
                  "Я чувствую, что многие на работе открыто конкурируют со мной.",
                  "Могу и накричать. Потом стыдно. Раньше так не было.",
                  "Я боюсь все испортить в работе и всех подвести.",
@@ -20,35 +19,32 @@ document.addEventListener('DOMContentLoaded', function(){
                  "Я становлюсь нечувствительным к проблемам и страданиям других.",
                  "Я буквально заставляю себя каждый день идти на работу.",
                  "Я все принимаю близко к сердцу."]
-    let answers = ["Совершенно неверно",
+let answers = ["Совершенно неверно",
                "Скорее неверно",
                "Точно не могу сказать",
                "Скорее верно",
                "Совершенно верно"]
-    q_with_a = []
-    for (var i = 0; i < 19; ++i) {
-        q_with_a.push([questions[i], answers[i]])
-    }
-    q_with_a = mix(q_with_a);
-    document.getElementById('q_1').innerHTML = q_with_a[0][0];
-    document.getElementById('q_2').innerHTML = q_with_a[1][0];
-    document.getElementById('q_3').innerHTML = q_with_a[2][0];
-    document.getElementById('q_4').innerHTML = q_with_a[3][0];
-    document.getElementById('q_5').innerHTML = q_with_a[4][0];
-    document.getElementById('q_6').innerHTML = q_with_a[5][0];
-    document.getElementById('q_7').innerHTML = q_with_a[6][0];
-    document.getElementById('q_8').innerHTML = q_with_a[7][0];
-    document.getElementById('q_9').innerHTML = q_with_a[8][0];
-    document.getElementById('q_10').innerHTML = q_with_a[9][0];
-    document.getElementById('q_11').innerHTML = q_with_a[10][0];
-    document.getElementById('q_12').innerHTML = q_with_a[11][0];
-    document.getElementById('q_13').innerHTML = q_with_a[12][0];
-    document.getElementById('q_14').innerHTML = q_with_a[13][0];
-    document.getElementById('q_15').innerHTML = q_with_a[14][0];
-    document.getElementById('q_16').innerHTML = q_with_a[15][0];
-    document.getElementById('q_17').innerHTML = q_with_a[16][0];
-    document.getElementById('q_18').innerHTML = q_with_a[17][0];
-    document.getElementById('q_19').innerHTML = q_with_a[18][0];
+document.addEventListener('DOMContentLoaded', function(){
+    questions = mix(questions);
+    document.getElementById('q_1').innerHTML = questions[0];
+    document.getElementById('q_2').innerHTML = questions[1];
+    document.getElementById('q_3').innerHTML = questions[2];
+    document.getElementById('q_4').innerHTML = questions[3];
+    document.getElementById('q_5').innerHTML = questions[4];
+    document.getElementById('q_6').innerHTML = questions[5];
+    document.getElementById('q_7').innerHTML = questions[6];
+    document.getElementById('q_8').innerHTML = questions[7];
+    document.getElementById('q_9').innerHTML = questions[8];
+    document.getElementById('q_10').innerHTML = questions[9];
+    document.getElementById('q_11').innerHTML = questions[10];
+    document.getElementById('q_12').innerHTML = questions[11];
+    document.getElementById('q_13').innerHTML = questions[12];
+    document.getElementById('q_14').innerHTML = questions[13];
+    document.getElementById('q_15').innerHTML = questions[14];
+    document.getElementById('q_16').innerHTML = questions[15];
+    document.getElementById('q_17').innerHTML = questions[16];
+    document.getElementById('q_18').innerHTML = questions[17];
+    document.getElementById('q_19').innerHTML = questions[18];
 });
 
 function mix(q) {
@@ -62,7 +58,7 @@ function mix(q) {
 }
 
 function AfterClick(question, answer) {
-    clientAns[question - 1] = answer;
+    clientAns[question - 1] = [questions[question - 1], answers[answer]];
 }
 
 function end() {
@@ -71,11 +67,13 @@ function end() {
     document.getElementById('kn_end').style.display = "none";
     document.getElementById('kn_com').style.display = "block";
     document.getElementById('end').style.display = "block";
+    document.getElementById('back').style.display = "block";
 }
 
 function comment() {
     document.getElementById('kn_com').style.display = "none";
     document.getElementById('comment').style.display = "block";
+    document.getElementById('back').style.display = "block";
 }
 
 function next_question() {
