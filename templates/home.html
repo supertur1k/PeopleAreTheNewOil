@@ -3,22 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        body {
+            background-color: #e6e6fa;
+        }
+        .nav {
+            width: 200px;
+            min-width: 200px;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            margin: 0;
+            right: -200px;
+            padding: 15px 20px;
+            -webkit-transition: right 1.0s;
+            background: rgb(109, 170, 164);
+        }
+
+        .nav-toggle {
+            position: absolute;
+            right: 200px;
+            padding: 0.5em;
+            background: inherit;
+            font-size: 1.2em;
+            line-height: 1;
+            z-index: 2000;
+            color: #e6e6fa;
+            cursor: pointer;
+        }
+        .nav-toggle:after {
+            content: '\2630';
+        }
+
+        .nav-toggle:hover {
+            color: white;
+        }
+        [id='nav-toggle']:checked ~ .nav > .nav-toggle {
+            right: 2px;
+            top: -0.2em;
+        }
+        [id='nav-toggle']:checked ~ .nav {
+            right: 0;
+        }
+        [id='nav-toggle']:checked ~ .nav > .nav-toggle:after {
+            content: '\2715';
+        }
+
+        .nav > ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .nav > ul > li {
+            line-height: 3;
+            opacity: 0;
+            -webkit-transition: opacity .5s .1s, -webkit-transform .5s .1s;
+        }
+        [id='nav-toggle']:checked ~ .nav > ul > li {
+            opacity: 1;
+        }
+
+        .nav > ul > li > a {
+            position: relative;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.5em;
+            display: inline-block;
+            color: #e6e6fa;
+            width: 100%;
+            text-decoration: none;
+            -webkit-transition: color .5s ease, padding .5s ease;
+        }
+
+        .nav > ul > li > a:hover,
+        .nav > ul > li > a:focus {
+            color: white;
+            padding-left: 10px;
+        }
+
+        .nav > ul > li > a:after {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 100%;
+            content: '';
+            background: #e6e6fa;
+            -webkit-transition: width .5s ease;
+            transition: width .5s ease;
+        }
+        .description {
+            text-align: center;
+            color: rgb(109, 170, 164);
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            font-size: 1.5em;
+        }
+        h1 {
+            text-align: center;
+            color: rgb(109, 170, 164);
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            font-size: 3em;
+        }
+        img {
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
-    {% if user.is_authenticated %}
-        {% if user.is_staff %}
-            <a href="{% url 'profile-master' %}">Профиль</a>
+    <div>
+        {% if user.is_authenticated %}
+            <h1> Добро пожаловать, {{ user.first_name }}!</h1>
         {% else %}
-            <a href="{% url 'profile' %}">Профиль</a>
-            <a href="{% url 'slave' %}">Пройти тест</a>
+            <h1> Добро пожаловать!<Br>
+                Для работы с сайтом необходимо авторизоваться.
+            </h1>
         {% endif %}
-        <a href="{% url 'logout' %}">Выйти</a>
-
-    {% else %}
-        <a href="{% url 'login' %}">Войти</a>
-        <a href="{% url 'register_pro' %}">Регистрация для руководителей</a>
-        <a href="{% url 'register' %}">Регистрация</a>
-
-    {% endif %}
+        <h1>
+            <img  id="0"   src="../../static/img_v2.png"  width="700" height="500">
+        </h1>
+        <h1 class="description">
+            Наш сайт создан, для того чтобы помогать компаниям в таких вещах, как:<Br>
+            1) Отслеживание эмоционального состояния сотрудников. <Br>
+            2) Помощь в составлении графиков отпусков. <Br>
+        </h1>
+        <input type="checkbox" id="nav-toggle" hidden>
+        <nav class="nav">
+            <label for="nav-toggle" class="nav-toggle" onclick></label>
+            <ul>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <li><a href="{% url 'profile-master' %}">Профиль</a>
+                    {% else %}
+                        <li><a href="{% url 'profile' %}">Профиль</a>
+                        <li><a href="{% url 'slave' %}">Пройти тест</a>
+                    {% endif %}
+                    <li><a href="{% url 'logout' %}">Выйти</a>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Войти</a>
+                    <li><a href="{% url 'register_pro' %}">Регистрация для руководителей</a>
+                    <li><a href="{% url 'register' %}">Регистрация</a>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 </body>
 </html>
