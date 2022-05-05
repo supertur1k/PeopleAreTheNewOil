@@ -5,17 +5,26 @@
     <meta charset="UTF-8">
     <title>Авторизация</title>
     <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
+    <style>
+        * {
+           box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
     <h1>Вход на сайт</h1>
-    {% if error %}
-        <div style="color:#ff0000;">{{ error }}</div>
-    {% endif %}
-    <form method="post">
+    <form method="post" class="login_form">
         {% csrf_token %}
-        <input type="text" name="username" placeholder="Логин">
-        <input type="password" name="password" placeholder="Пароль">
-        <input type="submit" value="Войти">
+        <div class="login_div">
+            <input type="text" name="username" required autocomplete="off"><label for="login">Логин</label>
+        </div>
+        <div class="login_div">
+            <input type="password" name="password" required autocomplete="off"><label for="password">Пароль</label>
+        </div>
+        <p><input type="submit" value="Войти"></p>
     </form>
+    {% if error %}
+        <h1 style="color:red;">{{ error }} </h1>
+    {% endif %}
 </body>
 </html>

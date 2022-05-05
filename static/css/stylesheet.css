@@ -101,11 +101,67 @@ h1 {
 img {
     margin: 0 auto;
 }
-p {
+.prof {
     position: absolute;
     left: 50px;
     color: rgb(109, 170, 164);
     font-family: 'Open Sans', sans-serif;
     font-weight: 300;
     font-size: 1.5em;
+}
+.login_form {
+   max-width: 350px;
+   padding: 80px 30px 30px;
+   margin: 50px auto 30px;
+   background: #e6e6fa;
+}
+.login_div {
+   position: relative;
+   margin-bottom: 40px;
+}
+.login_div input {
+   display: block;
+   width: 100%;
+   padding: 0 10px;
+   line-height: 40px;
+   font-family: 'Open Sans', sans-serif;
+   background: none;
+   border-width: 0;
+   border-bottom: 2px solid rgb(109, 170, 164);
+}
+.login_div label {
+   position: absolute;
+   left: 13px;
+   color: gray;
+   font-size: 20px;
+   font-weight: 300;
+   transform: translateY(-35px);
+   transition: all 0.2s ease;
+}
+.login_div input:focus {
+   outline: 0;
+   border-color: darkgreen;
+}
+.login_div input:focus+label, .login_div input:valid+label {
+   transform: translateY(-60px);
+   margin-left: -14px;
+   font-size: 14px;
+   font-weight: 400;
+   outline: 0;
+   border-color: darkgreen;
+   color: darkgreen;
+}
+.login_form input[type="submit"] {
+   width: 100%;
+   padding: 0;
+   line-height: 42px;
+   background: rgb(109, 170, 164);
+   border-width: 0;
+   color: #e6e6fa;
+   font-size: 20px;
+}
+.login_form input[type="submit"]:hover,
+.login_form input[type="submit"]:focus {
+    background: darkgreen;
+    cursor: pointer;
 }
