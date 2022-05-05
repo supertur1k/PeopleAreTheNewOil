@@ -3,16 +3,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Здравствуйте!</title>
+    <title>Профиль</title>
     <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
 </head>
 <body>
-    <h1>Мой профиль</h1>
-
-    Имя пользователя: {{ user.username }} <br>
-    Email: {{ user.email }}
-    <a href="http://127.0.0.1:8000/">На главную</a>
-    <a href="{% url 'logout' %}">Выйти</a>
+    <h1>Мой профиль!</h1>
+    <p>
+        Имя: {{ user.first_name }} <br>
+        Фамилия: {{ user.last_name }} <br>
+        Логин пользователя: {{ user.username }} <br>
+        Email: {{ user.email }}
+    </p>
+    <input type="checkbox" id="nav-toggle" hidden>
+    <nav class="nav">
+        <label for="nav-toggle" class="nav-toggle" onclick></label>
+        <ul>
+            <li> <a href="{% url 'slave' %}">Пройти тест</a>
+            <li> <a href="http://127.0.0.1:8000/">На главную</a>
+            <li> <a href="{% url 'logout' %}">Выйти</a>
+        </ul>
+    </nav>
 
     <h1>Мои работники:</h1>
     {% for elem in Name %}

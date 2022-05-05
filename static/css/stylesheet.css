@@ -1,7 +1,111 @@
 body {
-    background-color: black;
+    background-color: #e6e6fa;
+}
+.nav {
+    width: 200px;
+    min-width: 200px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    right: -200px;
+    padding: 15px 20px;
+    -webkit-transition: right 1.0s;
+    background: rgb(109, 170, 164);
+}
+.nav-toggle {
+    position: absolute;
+    right: 200px;
+    padding: 0.5em;
+    background: inherit;
+    font-size: 1.2em;
+    line-height: 1;
+    z-index: 2000;
+    color: #e6e6fa;
+    cursor: pointer;
+}
+.nav-toggle:after {
+    content: '\2630';
 }
 
-a {
-    color: red;
+.nav-toggle:hover {
+    color: white;
+}
+[id='nav-toggle']:checked ~ .nav > .nav-toggle {
+    right: 2px;
+    top: -0.2em;
+}
+[id='nav-toggle']:checked ~ .nav {
+    right: 0;
+}
+[id='nav-toggle']:checked ~ .nav > .nav-toggle:after {
+    content: '\2715';
+}
+
+.nav > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.nav > ul > li {
+    line-height: 3;
+    opacity: 0;
+    -webkit-transition: opacity .5s .1s, -webkit-transform .5s .1s;
+}
+[id='nav-toggle']:checked ~ .nav > ul > li {
+    opacity: 1;
+}
+.nav > ul > li > a {
+    position: relative;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1.5em;
+    display: inline-block;
+    color: #e6e6fa;
+    width: 100%;
+    text-decoration: none;
+    -webkit-transition: color .5s ease, padding .5s ease;
+}
+.nav > ul > li > a:hover,
+.nav > ul > li > a:focus {
+    color: white;
+    padding-left: 10px;
+}
+.nav > ul > li > a:after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    content: '';
+    background: #e6e6fa;
+    -webkit-transition: width .5s ease;
+    transition: width .5s ease;
+}
+.description {
+    text-align: center;
+    color: rgb(109, 170, 164);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1.5em;
+}
+h1 {
+    text-align: center;
+    color: rgb(109, 170, 164);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 3em;
+}
+img {
+    margin: 0 auto;
+}
+p {
+    position: absolute;
+    left: 50px;
+    color: rgb(109, 170, 164);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1.5em;
 }
