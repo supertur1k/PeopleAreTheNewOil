@@ -39,7 +39,6 @@ class LoginView(TemplateView):
             if user is not None:
                 if user.groups.all()[0].name == "Master":
                     login(request, user)
-                    user.is_staff = True
                 else:
                     login(request, user)
                 return render(request, 'home.html')
