@@ -6,6 +6,16 @@ from django.views.generic import TemplateView
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from datetime import datetime
+
+import sqlite3
+
+con = sqlite3.connect('users.db', check_same_thread=False)
+cur = con.cursor()
+cur.execute('''CREATE TABLE IF NOT EXISTS users 
+               (username, password, email, admin)''')
+cur.execute('''CREATE TABLE IF NOT EXISTS raw_results(username, question, answer, month, year)''')
+cur.execute('''CREATE TABLE IF NOT EXISTS processed_results(username, attribute, value, month, year)''')
 
 def home(request):
     return render(request, 'home.html')
@@ -18,6 +28,13 @@ def slave(request):
 
 def results(request):
     all_users = User.objects.filter(groups__name='Slaves').values()
+    month = datetime.now().month
+    year = datetime.now().year
+    raw_results = cur.execute("SELECT * FROM raw_results WHERE month = '%s' AND year = '%s'" % (month, year))  # Сырые
+    # результаты за месяц
+    processed_results = cur.execute(
+        "SELECT * FROM processed_results WHERE month = '%s' AND year = '%s'" % (month, year))  # Обработанные
+    # результаты за месяц
     res = {"Name": all_users}
     return render(request, "results.html", context=res)
 
@@ -59,7 +76,7 @@ class TestPage(TemplateView):
 def get_slaves():
     users = get_user_model().objects.all()
     result = []
-    for elem in users:
+    for user in users:
         if user.groups.all()[0].name == "Slaves":
-            result.append(elem)
+            result.append(user)
     return result

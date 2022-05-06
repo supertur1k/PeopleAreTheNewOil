@@ -51,6 +51,9 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('q_19').innerHTML = questions[18];
 });
 
+const sqlite3 = require('sqlite3');
+const db = new sqlite3.Database('./users.db');
+
 function mix(q) {
     for (var i = q.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -67,8 +70,13 @@ function AfterClick(question, answer) {
 }
 
 function ProcessTestResults(arr) {
+    const d = new Date();
+    let month = d.getMonth();
+    let year = d.getYear();
     var result = {'param1' : 0, 'param2' : 0, 'param3' : 0}
     for (var i = 0; i < 19; ++i) {
+        db.run('INSERT INTO raw_results(username, question, answer) VALUES(?, ?, ?)', ['test_user', arr[i][0], arr[i][1], month, year]) // Где взять юзера?
+        // В arr[i][0] лежит вопрос, в arr[i][1] - ответ?
         switch (arr[i][0]) {
             case "Обычные обязанности напрягают меня больше чем обычно?":
                 break;
