@@ -109,6 +109,20 @@ img {
     font-weight: 300;
     font-size: 1.5em;
 }
+.alert {
+    text-align: center;
+    color: rgb(109, 170, 164);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 3em;
+}
+.question {
+    text-align: center;
+    color: rgb(109, 170, 164);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 3em;
+}
 .login_form {
    max-width: 350px;
    padding: 80px 30px 30px;
@@ -165,3 +179,45 @@ img {
     background: darkgreen;
     cursor: pointer;
 }
+.btn {
+    text-align: center;
+    align-items: center;
+    width:300px;
+    color: rgb(109, 170, 164);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 3em;
+    }
+    .answ {
+    cursor: pointer;
+    }
+
+    .form_radio_btn {
+        cursor: pointer;
+        text-align-all: center;
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .form_radio_btn input[type=radio] {
+        cursor: pointer;
+        text-align: center;
+        display: none;
+    }
+    .form_radio_btn label {
+        text-align: center;
+        display: inline-block;
+        cursor: pointer;
+        padding: 0px 20px;
+        line-height: 50px;
+        border: 2px solid #999;
+        border-radius: 10px;
+        user-select: none;
+    }
+
+    .form_radio_btn input[type=radio]:checked + label {
+        background: #ffe0a6;
+    }
+
+    .form_radio_btn label:hover {
+        color: #666;
+    }

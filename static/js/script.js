@@ -115,6 +115,7 @@ function end() {
     document.getElementById('kn_com').style.display = "block";
     document.getElementById('end').style.display = "block";
     document.getElementById('back').style.display = "block";
+    alert(clientAns);
 }
 
 function comment() {
