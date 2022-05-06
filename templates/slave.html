@@ -7,11 +7,8 @@
     <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
     <style>
     * {
-        align-items: center;
         text-align: center;
         box-sizing: border-box;
-        alignment: center;
-
     }
     </style>
 </head>
@@ -19,9 +16,6 @@
 <script src="../../static/js/script.js">
 
 </script>
-    <h1>
-        Тест
-    </h1>
     <div class="card-body">
         <div id="q1" style="display:block;">
             <p class="question">Вопрос 1</p>
@@ -631,22 +625,14 @@
                 </p>
             </div>
         </div>
-        <button id="kn_sl" class="btn" onclick="next_question();">Следующий вопрос</button>
-        <button id="kn_end" class="btn" style="display: none" onclick="end();">Завершить тест</button>
+        <div id="kn_sl">
+            <button class="btn" onclick="next_question();">Следующий вопрос</button>
+        </div>
+        <div id="kn_end" style="display: none;">
+            <button class="btn" onclick="end();">Завершить тест</button>
+        </div>
         <div id="end" style="display:none;">
             <h1> Благодарим вас за прохождение теста!</h1>
-        </div>
-        <button id="kn_com" class="btn" style="display: none;" onclick="comment();">Оставить комментарий</button>
-        <div id="comment" style="display:none;">
-            <p class="question">Комментарий<Br>
-            <textarea name="comment" cols="40" rows="3"></textarea></p>
-            <p><input type="submit" value="Отправить">
-            <input type="reset" value="Очистить"></p>
-        </div>
-        <div id="back" style="display:none">
-            <form action="http://127.0.0.1:8000/" target="_blank">
-                <button class="btn">На главную</button>
-            </form>
         </div>
     </div>
 </body>

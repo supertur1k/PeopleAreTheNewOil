@@ -1,4 +1,5 @@
 let testQuestion = "Я чувствую, что отвечаю на вопросы случайным образом."
+var is_ans = []
 var clientAns = []
 var questions = ["Обычные обязанности напрягают меня больше чем обычно?",
                  "Я чувствую, что многие на работе открыто конкурируют со мной.",
@@ -26,6 +27,9 @@ let answers = ["Совершенно неверно",
                "Совершенно верно"]
 document.addEventListener('DOMContentLoaded', function(){
     questions = mix(questions);
+    for (var i = 0; i < 19; ++i) {
+        is_ans[i] = false;
+    }
     document.getElementById('q_1').innerHTML = questions[0];
     document.getElementById('q_2').innerHTML = questions[1];
     document.getElementById('q_3').innerHTML = questions[2];
@@ -58,6 +62,7 @@ function mix(q) {
 }
 
 function AfterClick(question, answer) {
+    is_ans[question - 1] = true;
     clientAns[question - 1] = [questions[question - 1], answer];
 }
 
@@ -109,94 +114,167 @@ function ProcessTestResults(arr) {
 }
 
 function end() {
-    document.getElementById('q19').style.display = "none";
-    document.getElementById('kn_sl').style.display = "none";
-    document.getElementById('kn_end').style.display = "none";
-    document.getElementById('kn_com').style.display = "block";
-    document.getElementById('end').style.display = "block";
-    document.getElementById('back').style.display = "block";
-    alert(clientAns);
-}
+    if (!is_ans[18]) {
+        alert("Вы не ответили на данный вопрос!");
+    } else {
+        document.getElementById('q19').style.display = "none";
+        document.getElementById('kn_sl').style.display = "none";
+        document.getElementById('kn_end').style.display = "none";
+        document.getElementById('end').style.display = "block";
+        for (var i = 0; i < 19; ++i) {
+            is_ans[i] = false;
+        }
+        toUrl = "http://127.0.0.1:8000/";
 
-function comment() {
-    document.getElementById('kn_com').style.display = "none";
-    document.getElementById('comment').style.display = "block";
-    document.getElementById('back').style.display = "block";
+        setTimeout("location.href = toUrl;", "3000");
+    }
 }
 
 function next_question() {
-    if(document.getElementById('q18').style.display === "block"){
-        document.getElementById('q18').style.display = "none";
-        document.getElementById('q19').style.display = "block";
-        document.getElementById('kn_sl').style.display = "none";
-        document.getElementById('kn_end').style.display = "block";
+    if(document.getElementById('q18').style.display === "block") {
+        if (!is_ans[17]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q18').style.display = "none";
+            document.getElementById('q19').style.display = "block";
+            document.getElementById('kn_sl').style.display = "none";
+            document.getElementById('kn_end').style.display = "block";
+        }
     }
-    if(document.getElementById('q17').style.display === "block"){
-        document.getElementById('q17').style.display = "none";
-        document.getElementById('q18').style.display = "block";
+    if(document.getElementById('q17').style.display === "block") {
+        if (!is_ans[16]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q17').style.display = "none";
+            document.getElementById('q18').style.display = "block";
+        }
     }
-    if(document.getElementById('q16').style.display === "block"){
-        document.getElementById('q16').style.display = "none";
-        document.getElementById('q17').style.display = "block";
+    if(document.getElementById('q16').style.display === "block") {
+        if (!is_ans[15]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q16').style.display = "none";
+            document.getElementById('q17').style.display = "block";
+        }
     }
-    if(document.getElementById('q15').style.display === "block"){
-        document.getElementById('q15').style.display = "none";
-        document.getElementById('q16').style.display = "block";
+    if(document.getElementById('q15').style.display === "block") {
+        if (!is_ans[14]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q15').style.display = "none";
+            document.getElementById('q16').style.display = "block";
+        }
     }
-    if(document.getElementById('q14').style.display === "block"){
-        document.getElementById('q14').style.display = "none";
-        document.getElementById('q15').style.display = "block";
+    if(document.getElementById('q14').style.display === "block") {
+        if (!is_ans[13]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q14').style.display = "none";
+            document.getElementById('q15').style.display = "block";
+        }
     }
-    if(document.getElementById('q13').style.display === "block"){
-        document.getElementById('q13').style.display = "none";
-        document.getElementById('q14').style.display = "block";
+    if(document.getElementById('q13').style.display === "block") {
+        if (!is_ans[12]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q13').style.display = "none";
+            document.getElementById('q14').style.display = "block";
+        }
     }
-    if(document.getElementById('q12').style.display === "block"){
-        document.getElementById('q12').style.display = "none";
-        document.getElementById('q13').style.display = "block";
+    if(document.getElementById('q12').style.display === "block") {
+        if (!is_ans[11]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q12').style.display = "none";
+            document.getElementById('q13').style.display = "block";
+        }
     }
-    if(document.getElementById('q11').style.display === "block"){
-        document.getElementById('q11').style.display = "none";
-        document.getElementById('q12').style.display = "block";
+    if(document.getElementById('q11').style.display === "block") {
+        if (!is_ans[10]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q11').style.display = "none";
+            document.getElementById('q12').style.display = "block";
+        }
     }
-    if(document.getElementById('q10').style.display === "block"){
-        document.getElementById('q10').style.display = "none";
-        document.getElementById('q11').style.display = "block";
+    if(document.getElementById('q10').style.display === "block") {
+        if (!is_ans[9]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q10').style.display = "none";
+            document.getElementById('q11').style.display = "block";
+        }
     }
-    if(document.getElementById('q9').style.display === "block"){
-        document.getElementById('q9').style.display = "none";
-        document.getElementById('q10').style.display = "block";
+    if(document.getElementById('q9').style.display === "block") {
+        if (!is_ans[8]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q9').style.display = "none";
+            document.getElementById('q10').style.display = "block";
+        }
     }
-    if(document.getElementById('q8').style.display === "block"){
-        document.getElementById('q8').style.display = "none";
-        document.getElementById('q9').style.display = "block";
+    if(document.getElementById('q8').style.display === "block") {
+        if (!is_ans[7]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q8').style.display = "none";
+            document.getElementById('q9').style.display = "block";
+        }
     }
-    if(document.getElementById('q7').style.display === "block"){
-        document.getElementById('q7').style.display = "none";
-        document.getElementById('q8').style.display = "block";
+    if(document.getElementById('q7').style.display === "block") {
+        if (!is_ans[6]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q7').style.display = "none";
+            document.getElementById('q8').style.display = "block";
+        }
     }
-    if(document.getElementById('q6').style.display === "block"){
-        document.getElementById('q6').style.display = "none";
-        document.getElementById('q7').style.display = "block";
+    if(document.getElementById('q6').style.display === "block") {
+        if (!is_ans[5]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q6').style.display = "none";
+            document.getElementById('q7').style.display = "block";
+        }
     }
-    if(document.getElementById('q5').style.display === "block"){
-        document.getElementById('q5').style.display = "none";
-        document.getElementById('q6').style.display = "block";
+    if(document.getElementById('q5').style.display === "block") {
+        if (!is_ans[4]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q5').style.display = "none";
+            document.getElementById('q6').style.display = "block";
+        }
     }
-    if(document.getElementById('q4').style.display === "block"){
-        document.getElementById('q4').style.display = "none";
-        document.getElementById('q5').style.display = "block";
+    if(document.getElementById('q4').style.display === "block") {
+        if (!is_ans[3]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q4').style.display = "none";
+            document.getElementById('q5').style.display = "block";
+        }
     }
-    if(document.getElementById('q3').style.display === "block"){
-        document.getElementById('q3').style.display = "none";
-        document.getElementById('q4').style.display = "block";
+    if(document.getElementById('q3').style.display === "block") {
+        if (!is_ans[2]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q3').style.display = "none";
+            document.getElementById('q4').style.display = "block";
+        }
     }
-    if(document.getElementById('q2').style.display === "block"){
-        document.getElementById('q2').style.display = "none";
-        document.getElementById('q3').style.display = "block";
+    if(document.getElementById('q2').style.display === "block") {
+        if (!is_ans[1]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q2').style.display = "none";
+            document.getElementById('q3').style.display = "block";
+        }
     }
-    if(document.getElementById('q1').style.display === "block"){
-        document.getElementById('q1').style.display = "none";
-        document.getElementById('q2').style.display = "block";
+    if(document.getElementById('q1').style.display === "block") {
+        if (!is_ans[0]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('q1').style.display = "none";
+            document.getElementById('q2').style.display = "block";
+        }
     }
 }
