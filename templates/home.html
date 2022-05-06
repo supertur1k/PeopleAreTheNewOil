@@ -30,15 +30,14 @@
                 {% if user.is_authenticated %}
                     {% if user.is_staff %}
                         <li><a href="{% url 'profile-master' %}">Профиль</a>
+                        <li> <a href="{% url 'results' %}">Результаты сотрудников</a>
                     {% else %}
                         <li><a href="{% url 'profile' %}">Профиль</a>
-                        <li><a href="{% url 'slave' %}">Пройти тест</a>
                     {% endif %}
+                    <li><a href="{% url 'slave' %}">Пройти тест</a>
                     <li><a href="{% url 'logout' %}">Выйти</a>
                 {% else %}
                     <li><a href="{% url 'login' %}">Войти</a>
-                    <li><a href="{% url 'register_pro' %}">Регистрация для руководителей</a>
-                    <li><a href="{% url 'register' %}">Регистрация</a>
                 {% endif %}
             </ul>
         </nav>

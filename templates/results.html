@@ -3,23 +3,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Профиль</title>
+    <title>Results</title>
     <link rel="stylesheet" href="{% static 'css/stylesheet.css'%}" type="text/css">
 </head>
 <body>
-    <h1>Мой профиль!</h1>
-    <p class="prof">
-        Имя: {{ user.first_name }} <br>
-        Фамилия: {{ user.last_name }} <br>
-        Логин пользователя: {{ user.username }} <br>
-        Email: {{ user.email }}
-    </p>
+    <h1>
+        Результаты тестов сотрудников:
+    </h1>
+    {% for elem in Name %}
+        <h1>{{ elem.username }}</h1>
+    {% endfor %}
     <input type="checkbox" id="nav-toggle" hidden>
     <nav class="nav">
         <label for="nav-toggle" class="nav-toggle" onclick></label>
         <ul>
+            <li> <a href="{% url 'profile-master' %}">Профиль</a>
             <li> <a href="{% url 'slave' %}">Пройти тест</a>
-            <li> <a href="{% url 'results' %}">Результаты сотрудников</a>
             <li> <a href="http://127.0.0.1:8000/">На главную</a>
             <li> <a href="{% url 'logout' %}">Выйти</a>
         </ul>
