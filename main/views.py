@@ -1,8 +1,11 @@
+from typing import Any
+
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.views.generic import TemplateView
+from django.views import View
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -19,12 +22,15 @@ con = sqlite3.connect('db.sqlite3', check_same_thread=False)
 cur = con.cursor()
 
 
-class ApiIndexView(APIView):
-    permission_classes = (rest_framework.permissions.AllowAny,)
+class MyView(TemplateView):
+    template_name = "slave.html"
 
-    def post(self, request, format=None):
-        return Response("ok")
+    def get(self, request, *args, **kwargs):
+        return render(request, 'slave.html')
 
+    def post(self, request):
+        print(request.body)
+        return render(request, 'home.html')
 
 
 def home(request):
@@ -38,7 +44,7 @@ def master(request):
 def slave(request):
     if request.method == 'POST':
         print('Goliath online')
-    return render(request, 'slave.html')
+
 
 
 def results(request):
