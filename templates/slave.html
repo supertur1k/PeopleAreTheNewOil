@@ -629,7 +629,11 @@
             <button class="btn" onclick="next_question();">Следующий вопрос</button>
         </div>
         <div id="kn_end" style="display: none;">
-            <button class="btn" onclick="end();">Завершить тест</button>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="result" id="result">
+                <button class="btn" onclick="end();">Завершить тест</button>
+            </form>
         </div>
         <div id="end" style="display:none;">
             <h1> Благодарим вас за прохождение теста!</h1>
