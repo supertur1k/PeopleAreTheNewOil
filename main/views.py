@@ -30,7 +30,7 @@ class MyView(TemplateView):
 
     def post(self, request):
         print(request.body)
-        return render(request, 'home.html')
+        return render(request, 'slave.html')
 
 
 def home(request):
