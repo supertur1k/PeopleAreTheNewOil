@@ -51,9 +51,6 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('q_19').innerHTML = questions[18];
 });
 
-const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database('./users.db');
-
 function mix(q) {
     for (var i = q.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
@@ -70,13 +67,8 @@ function AfterClick(question, answer) {
 }
 
 function ProcessTestResults(arr) {
-    const d = new Date();
-    let month = d.getMonth();
-    let year = d.getYear();
     var result = {'param1' : 0, 'param2' : 0, 'param3' : 0}
     for (var i = 0; i < 19; ++i) {
-        db.run('INSERT INTO raw_results(username, question, answer) VALUES(?, ?, ?)', ['test_user', arr[i][0], arr[i][1], month, year]) // Где взять юзера?
-        // В arr[i][0] лежит вопрос, в arr[i][1] - ответ?
         switch (arr[i][0]) {
             case "Обычные обязанности напрягают меня больше чем обычно?":
                 break;
@@ -121,32 +113,60 @@ function ProcessTestResults(arr) {
     return result
 }
 
-function end() {
-    if (!is_ans[18]) {
-        alert("Вы не ответили на данный вопрос!");
-    } else {
-        document.getElementById('q19').style.display = "none";
-        document.getElementById('kn_sl').style.display = "none";
-        document.getElementById('kn_end').style.display = "none";
-        document.getElementById('end').style.display = "block";
-        for (var i = 0; i < 19; ++i) {
-            is_ans[i] = false;
-        }
-        toUrl = "http://127.0.0.1:8000/";
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
-        setTimeout("location.href = toUrl;", "3000");
+async function postData(url = '', data = {}) {
+    const csrf = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+    const response = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+            'X-CSRF-Token': csrf,
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        body: JSON.stringify(data)
+      });
+    return await response.json();
+}
+
+
+function end() {
+    document.getElementById('kn_end').style.display = "none";
+    document.getElementById('end').style.display = "block";
+    for (var i = 0; i < 19; ++i) {
+        is_ans[i] = false;
     }
+
+    toUrl = "http://127.0.0.1:8000/";
+
+    setTimeout("location.href = toUrl;", "3000");
 }
 
 function next_question() {
+    if(document.getElementById('q19').style.display === "block") {
+        if (!is_ans[18]) {
+            alert("Вы не ответили на данный вопрос!");
+        } else {
+            document.getElementById('result').innerHTML = clientAns.toString();
+            document.getElementById('q19').style.display = "none";
+            document.getElementById('kn_sl').style.display = "none";
+            document.getElementById('kn_end').style.display = "block";
+        }
+    }
     if(document.getElementById('q18').style.display === "block") {
         if (!is_ans[17]) {
             alert("Вы не ответили на данный вопрос!");
         } else {
             document.getElementById('q18').style.display = "none";
             document.getElementById('q19').style.display = "block";
-            document.getElementById('kn_sl').style.display = "none";
-            document.getElementById('kn_end').style.display = "block";
         }
     }
     if(document.getElementById('q17').style.display === "block") {
