@@ -28,7 +28,7 @@ let answers = ["Совершенно неверно",
 document.addEventListener('DOMContentLoaded', function(){
     questions = mix(questions);
     for (var i = 0; i < 19; ++i) {
-        is_ans[i] = false;
+        is_ans[i] = true;
     }
     document.getElementById('q_1').innerHTML = questions[0];
     document.getElementById('q_2').innerHTML = questions[1];
@@ -155,7 +155,7 @@ function next_question() {
         if (!is_ans[18]) {
             alert("Вы не ответили на данный вопрос!");
         } else {
-            document.getElementById('result').innerHTML = clientAns.toString();
+            document.getElementById('result').innerHTML = JSON.stringify(clientAns);
             document.getElementById('q19').style.display = "none";
             document.getElementById('kn_sl').style.display = "none";
             document.getElementById('kn_end').style.display = "block";
