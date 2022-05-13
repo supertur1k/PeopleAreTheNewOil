@@ -13,8 +13,6 @@ from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
 
 from main.models import Questions, RawQuestions
-import rest_framework.authentication
-import rest_framework.permissions
 
 import sqlite3
 
