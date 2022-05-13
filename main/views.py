@@ -17,6 +17,16 @@ cur.execute('''CREATE TABLE IF NOT EXISTS users
 cur.execute('''CREATE TABLE IF NOT EXISTS raw_results(username, question, answer, month, year)''')
 cur.execute('''CREATE TABLE IF NOT EXISTS processed_results(username, attribute, value, month, year)''')
 
+class MyView(TemplateView):
+    template_name = "slave.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            arr = request.POST.get('19')
+            username = request.POST['username']
+            return render(request, 'home.html')
+        return render(request, self.template_name)
+
 def home(request):
     return render(request, 'home.html')
 
@@ -72,6 +82,8 @@ class ProfilePage(TemplateView):
 
 class TestPage(TemplateView):
     template_name = "slave.html"
+
+
 
 def get_slaves():
     users = get_user_model().objects.all()
