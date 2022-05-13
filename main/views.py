@@ -115,20 +115,35 @@ def slave(request):
         print('Goliath online')
 
 
+def make_results(db_response):
+    res = {}
+    for row in db_response:
+        user = row[1]
+        if user not in res:
+            res[user] = []
+        res[user].append([row[2], row[3], row[4], row[5]])
+    return res
+
+
 def results(request):
     all_users = User.objects.filter(groups__name='Slaves').values()
     month = datetime.now().month
     year = datetime.now().year
+
     result_raw = cur.execute(
         "SELECT * FROM main_rawquestions WHERE month='%s' AND year='%s'" % (month, year))
     raw = result_raw.fetchall()
     print(raw)
+    raw_array = make_results(raw)
+
     processed_result = cur.execute(
         "SELECT * FROM main_questions WHERE month='%s' AND year='%s'" % (month, year)
     )
     processed = processed_result.fetchall()
     print(processed)
-    res = {"Name": raw}
+    processed_array = make_results(processed)
+
+    res = {"Name": raw_array}
     return render(request, "results.html", context=res)
 
 
