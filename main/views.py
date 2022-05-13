@@ -128,7 +128,7 @@ def results(request):
     )
     processed = processed_result.fetchall()
     print(processed)
-    res = {"Name": all_users}
+    res = {"Name": raw}
     return render(request, "results.html", context=res)
 
 
