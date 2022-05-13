@@ -129,21 +129,40 @@ def results(request):
     all_users = User.objects.filter(groups__name='Slaves').values()
     month = datetime.now().month
     year = datetime.now().year
+    raw_results = {}
+    processed_results = {}
+    for user_info in all_users:
+        username = user_info['username']
+        first_name = user_info['first_name']
+        last_name = user_info['last_name']
+        full_name = first_name + " " + last_name
 
-    result_raw = cur.execute(
-        "SELECT * FROM main_rawquestions WHERE month='%s' AND year='%s'" % (month, year))
-    raw = result_raw.fetchall()
-    print(raw)
-    raw_array = make_results(raw)
+        raw_for_user_db = cur.execute(
+            "SELECT question, answer, month, year FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s'" % (username, month, year))
+        raw_for_user = raw_for_user_db.fetchall()
+        raw_results[full_name] = raw_for_user
 
-    processed_result = cur.execute(
-        "SELECT * FROM main_questions WHERE month='%s' AND year='%s'" % (month, year)
-    )
-    processed = processed_result.fetchall()
-    print(processed)
-    processed_array = make_results(processed)
+        processed_for_user_db = cur.execute(
+            "SELECT condition, month, year FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s'" % (username, month, year))
+        processed_for_user = processed_for_user_db.fetchall()
+        processed_results[full_name] = processed_for_user
 
-    res = {"Name": raw_array}
+    # Здесь просто дёргаем все результаты, можно раскомментировать и будет печатать в консоль ¯\_(ツ)_/¯
+    # result_raw = cur.execute(
+    #     "SELECT * FROM main_rawquestions WHERE month='%s' AND year='%s'" % (month, year))
+    # raw = result_raw.fetchall()
+    # print(raw)
+    # raw_array = make_results(raw)
+    #
+    # processed_result = cur.execute(
+    #     "SELECT * FROM main_questions WHERE month='%s' AND year='%s'" % (month, year)
+    # )
+    # processed = processed_result.fetchall()
+    # print(processed)
+    # print(all_users)
+    # processed_array = make_results(processed)
+
+    res = {"Name": raw_results}
     return render(request, "results.html", context=res)
 
 
