@@ -138,12 +138,12 @@ def results(request):
         full_name = first_name + " " + last_name
 
         raw_for_user_db = cur.execute(
-            "SELECT question, answer, month, year FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s'" % (username, month, year))
+            "SELECT question, answer, month, year FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
         raw_for_user = raw_for_user_db.fetchall()
         raw_results[full_name] = raw_for_user
 
         processed_for_user_db = cur.execute(
-            "SELECT condition, month, year FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s'" % (username, month, year))
+            "SELECT condition, month, year FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
         processed_for_user = processed_for_user_db.fetchall()
         processed_results[full_name] = processed_for_user
 
