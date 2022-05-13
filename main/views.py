@@ -120,11 +120,11 @@ def results(request):
     month = datetime.now().month
     year = datetime.now().year
     result_raw = cur.execute(
-        "SELECT * FROM main_rawquestions")
+        "SELECT * FROM main_rawquestions WHERE month='%s' AND year='%s'" % (month, year))
     raw = result_raw.fetchall()
     print(raw)
     processed_result = cur.execute(
-        "SELECT * FROM main_questions"
+        "SELECT * FROM main_questions WHERE month='%s' AND year='%s'" % (month, year)
     )
     processed = processed_result.fetchall()
     print(processed)
