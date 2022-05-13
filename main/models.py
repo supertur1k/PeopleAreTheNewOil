@@ -5,8 +5,7 @@ from django.db import models
 
 class Questions(models.Model):
     employee_login = models.CharField(max_length=200, default='testing')
-    factor = models.CharField(max_length=200)     # Показатель состояния работника
-    value = models.CharField(max_length=200)      # Значение показателя
+    condition = models.CharField(max_length=200)  # Оценка состояния здоровья работника по результатам теста
     month = models.CharField(max_length=200)
     year = models.CharField(max_length=200)
 

@@ -11,6 +11,26 @@ import sqlite3
 con = sqlite3.connect('db.sqlite3', check_same_thread=False)
 cur = con.cursor()
 
+questions = ["Обычные обязанности напрягают меня больше чем обычно?",
+                 "Я чувствую, что многие на работе открыто конкурируют со мной.",
+                 "Могу и накричать. Потом стыдно. Раньше так не было.",
+                 "Я боюсь все испортить в работе и всех подвести.",
+                 "Выполняю работу как робот, иногда не могу остановиться.",
+                 "Меня напрягает, если надо выполнять работу вместе с кем-то.",
+                 "Меня не радует проделанная работа.",
+                 "В последнее время, мне часто приходится оправдываться за свою неадекватную реакцию.",
+                 "Я чувствую себя колхозной лошадью, которая работает больше всех и никогда не станет председателем.",
+                 "Я чувствую, что отвечаю на вопросы случайным образом.",
+                 "В последнее время я не очень охотно присоединяюсь к эмоциям других.",
+                 "Мне стало проще сделать все самостоятельно, чем просить кого-то.",
+                 "У меня такое чувство, что мой организм предательски активно протестует против моего режима работы и старается выбить меня из колеи.",
+                 "Меня чаще стало тревожить, правильно ли я выполняю работу.",
+                 "У меня нет сил ни с кем общаться на работе, делиться своими новостями, печалями и радостями.",
+                 "Я постоянно чувствую себя уставшим.",
+                 "Я становлюсь нечувствительным к проблемам и страданиям других.",
+                 "Я буквально заставляю себя каждый день идти на работу.",
+                 "Я все принимаю близко к сердцу."]
+
 
 class MyView(TemplateView):
     template_name = "slave.html"
@@ -27,6 +47,8 @@ class MyView(TemplateView):
         can_not_say = 0
         probably_correct = 0
         absolutely_correct = 0
+        month = datetime.now().month
+        year = datetime.now().year
 
         for i in range(19):
             if arr[i] == "0":
@@ -39,6 +61,10 @@ class MyView(TemplateView):
                 probably_correct = probably_correct + 1
             if arr[i] == "4":
                 absolutely_correct = absolutely_correct + 1
+            cur.execute("BEGIN TRANSACTION; ")
+            cur.execute(
+                "INSERT INTO main_rawquestions VALUES (NULL, '%s', '%s', '%s', '%s', '%s')" % (username, questions[i], arr[i], month, year))
+            cur.execute("COMMIT;")
 
         result = ""
 
@@ -69,6 +95,10 @@ class MyView(TemplateView):
                      "Рекомендуется консультация со специалистом."
 
         print("Сотрудник: ", username, "\nРезультат: ", result)
+        cur.execute("BEGIN TRANSACTION; ")
+        cur.execute(
+            "INSERT INTO main_questions VALUES (NULL, '%s', '%s', '%s', '%s');" % (username, result, month, year))
+        cur.execute("COMMIT;")
         return render(request, 'home.html')
 
 
@@ -89,8 +119,15 @@ def results(request):
     all_users = User.objects.filter(groups__name='Slaves').values()
     month = datetime.now().month
     year = datetime.now().year
-    processed_results = cur.execute(
+    result_raw = cur.execute(
         "SELECT * FROM main_rawquestions")
+    raw = result_raw.fetchall()
+    print(raw)
+    processed_result = cur.execute(
+        "SELECT * FROM main_questions"
+    )
+    processed = processed_result.fetchall()
+    print(processed)
     res = {"Name": all_users}
     return render(request, "results.html", context=res)
 
