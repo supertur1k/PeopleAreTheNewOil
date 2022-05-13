@@ -1,58 +1,69 @@
+from typing import Any
+
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.views.generic import TemplateView
+from django.views import View
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
+from django.views.decorators.csrf import csrf_protect
 from datetime import datetime
+
+from main.models import Questions, RawQuestions
+import rest_framework.authentication
+import rest_framework.permissions
 
 import sqlite3
 
-con = sqlite3.connect('users.db', check_same_thread=False)
+con = sqlite3.connect('db.sqlite3', check_same_thread=False)
 cur = con.cursor()
-cur.execute('''CREATE TABLE IF NOT EXISTS users 
-               (username, password, email, admin)''')
-cur.execute('''CREATE TABLE IF NOT EXISTS raw_results(username, question, answer, month, year)''')
-cur.execute('''CREATE TABLE IF NOT EXISTS processed_results(username, attribute, value, month, year)''')
+
 
 class MyView(TemplateView):
     template_name = "slave.html"
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            arr = request.POST.get('19')
-            username = request.POST['username']
-            return render(request, 'home.html')
-        return render(request, self.template_name)
+    def get(self, request, *args, **kwargs):
+        return render(request, 'slave.html')
+
+    def post(self, request):
+        print(request.body)
+        return render(request, 'home.html')
+
 
 def home(request):
     return render(request, 'home.html')
 
+
 def master(request):
     return render(request, 'master.html')
 
+
 def slave(request):
-    return render(request, 'slave.html')
+    if request.method == 'POST':
+        print('Goliath online')
+
+
 
 def results(request):
     all_users = User.objects.filter(groups__name='Slaves').values()
     month = datetime.now().month
     year = datetime.now().year
-    raw_results = cur.execute("SELECT * FROM raw_results WHERE month = '%s' AND year = '%s'" % (month, year))  # Сырые
-    # результаты за месяц
     processed_results = cur.execute(
-        "SELECT * FROM processed_results WHERE month = '%s' AND year = '%s'" % (month, year))  # Обработанные
-    # результаты за месяц
+        "SELECT * FROM main_rawquestions")
     res = {"Name": all_users}
     return render(request, "results.html", context=res)
+
 
 def slave_profile(request):
     return render(request, 'profile.html')
 
+
 def master_profile(request):
     return render(request, "profile-master.html")
+
 
 class LoginView(TemplateView):
     template_name = "login.html"
@@ -73,16 +84,18 @@ class LoginView(TemplateView):
                 context['error'] = "Логин или пароль неправильные"
         return render(request, self.template_name, context)
 
+
 def logout(request):
     django_logout(request)
     return render(request, 'logout.html')
 
+
 class ProfilePage(TemplateView):
     template_name = "profile.html"
 
+
 class TestPage(TemplateView):
     template_name = "slave.html"
-
 
 
 def get_slaves():
