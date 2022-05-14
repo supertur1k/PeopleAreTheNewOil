@@ -1,4 +1,4 @@
-raw_results:
-{"Results" : [ { "Name": str, "Question": str, "Answer": str }, ...    ] }
-processed_results: - пока не отправляем
-{"Results" : [ { "Name": str, "TestResult": str }, ...    ] }
+{
+"Raw_results" : [ "Name1": {"Question": str, "Answer": str }, "Name2": {"Question": str, "Answer": str }, ...    ],
+"Processed_results" : [ "Name1": {"Result": str }, "Name2": {"Result": str }, ...    ],
+}
