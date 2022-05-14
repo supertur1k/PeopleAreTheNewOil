@@ -11,6 +11,26 @@ import sqlite3
 con = sqlite3.connect('db.sqlite3', check_same_thread=False)
 cur = con.cursor()
 
+questions = ["Обычные обязанности напрягают меня больше чем обычно?",
+                 "Я чувствую, что многие на работе открыто конкурируют со мной.",
+                 "Могу и накричать. Потом стыдно. Раньше так не было.",
+                 "Я боюсь все испортить в работе и всех подвести.",
+                 "Выполняю работу как робот, иногда не могу остановиться.",
+                 "Меня напрягает, если надо выполнять работу вместе с кем-то.",
+                 "Меня не радует проделанная работа.",
+                 "В последнее время, мне часто приходится оправдываться за свою неадекватную реакцию.",
+                 "Я чувствую себя колхозной лошадью, которая работает больше всех и никогда не станет председателем.",
+                 "Я чувствую, что отвечаю на вопросы случайным образом.",
+                 "В последнее время я не очень охотно присоединяюсь к эмоциям других.",
+                 "Мне стало проще сделать все самостоятельно, чем просить кого-то.",
+                 "У меня такое чувство, что мой организм предательски активно протестует против моего режима работы и старается выбить меня из колеи.",
+                 "Меня чаще стало тревожить, правильно ли я выполняю работу.",
+                 "У меня нет сил ни с кем общаться на работе, делиться своими новостями, печалями и радостями.",
+                 "Я постоянно чувствую себя уставшим.",
+                 "Я становлюсь нечувствительным к проблемам и страданиям других.",
+                 "Я буквально заставляю себя каждый день идти на работу.",
+                 "Я все принимаю близко к сердцу."]
+
 
 class MyView(TemplateView):
     template_name = "slave.html"
@@ -27,6 +47,8 @@ class MyView(TemplateView):
         can_not_say = 0
         probably_correct = 0
         absolutely_correct = 0
+        month = datetime.now().month
+        year = datetime.now().year
 
         for i in range(19):
             if arr[i] == "0":
@@ -39,6 +61,10 @@ class MyView(TemplateView):
                 probably_correct = probably_correct + 1
             if arr[i] == "4":
                 absolutely_correct = absolutely_correct + 1
+            cur.execute("BEGIN TRANSACTION; ")
+            cur.execute(
+                "INSERT INTO main_rawquestions VALUES (NULL, '%s', '%s', '%s', '%s', '%s')" % (username, questions[i], arr[i], month, year))
+            cur.execute("COMMIT;")
 
         result = ""
 
@@ -69,6 +95,10 @@ class MyView(TemplateView):
                      "Рекомендуется консультация со специалистом."
 
         print("Сотрудник: ", username, "\nРезультат: ", result)
+        cur.execute("BEGIN TRANSACTION; ")
+        cur.execute(
+            "INSERT INTO main_questions VALUES (NULL, '%s', '%s', '%s', '%s');" % (username, result, month, year))
+        cur.execute("COMMIT;")
         return render(request, 'home.html')
 
 
@@ -85,13 +115,60 @@ def slave(request):
         print('Goliath online')
 
 
+def make_results(db_response):
+    res = {}
+    for row in db_response:
+        user = row[1]
+        if user not in res:
+            res[user] = []
+        res[user].append([row[2], row[3], row[4], row[5]])
+    return res
+
+
 def results(request):
     all_users = User.objects.filter(groups__name='Slaves').values()
     month = datetime.now().month
     year = datetime.now().year
-    processed_results = cur.execute(
-        "SELECT * FROM main_rawquestions")
-    res = {"Name": all_users}
+
+    raw_results = []
+    processed_results = []
+
+    for user_info in all_users:
+        username = user_info['username']
+        first_name = user_info['first_name']
+        last_name = user_info['last_name']
+        full_name = first_name + " " + last_name
+
+        raw_db = cur.execute(
+            "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
+        raw_for_user = raw_db.fetchall()
+        for info in raw_for_user:
+            current_raw = {'Name': full_name, 'Question': info[0], 'Answer': info[1]}
+            raw_results.append(current_raw)
+
+        processed_for_user_db = cur.execute(
+            "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
+        processed_for_user = processed_for_user_db.fetchall()
+        for info in processed_for_user:
+            current_processed = {'Name': full_name, 'TestResult': info[0]}
+            processed_results.append(current_processed)
+
+    # Здесь просто дёргаем все результаты, можно раскомментировать и будет печатать в консоль ¯\_(ツ)_/¯
+    # result_raw = cur.execute(
+    #     "SELECT * FROM main_rawquestions WHERE month='%s' AND year='%s'" % (month, year))
+    # raw = result_raw.fetchall()
+    # print(raw)
+    # raw_array = make_results(raw)
+    #
+    # processed_result = cur.execute(
+    #     "SELECT * FROM main_questions WHERE month='%s' AND year='%s'" % (month, year)
+    # )
+    # processed = processed_result.fetchall()
+    # print(processed)
+    # print(all_users)
+    # processed_array = make_results(processed)
+
+    res = {"Results": raw_results}
     return render(request, "results.html", context=res)
 
 

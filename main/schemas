@@ -1,0 +1,4 @@
+raw_results:
+{"Results" : [ { "Name": str, "Question": str, "Answer": str }, ...    ] }
+processed_results: - пока не отправляем
+{"Results" : [ { "Name": str, "TestResult": str }, ...    ] }
