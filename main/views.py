@@ -129,23 +129,27 @@ def results(request):
     all_users = User.objects.filter(groups__name='Slaves').values()
     month = datetime.now().month
     year = datetime.now().year
-    raw_results = {}
-    processed_results = {}
+
+    raw_results = []
+    processed_results = []
+
     for user_info in all_users:
         username = user_info['username']
         first_name = user_info['first_name']
         last_name = user_info['last_name']
         full_name = first_name + " " + last_name
 
-        raw_for_user_db = cur.execute(
-            "SELECT question, answer, month, year FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
-        raw_for_user = raw_for_user_db.fetchall()
-        raw_results[full_name] = raw_for_user
+        raw_db = cur.execute(
+            "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
+        raw_for_user = raw_db.fetchall()
+        current_raw = {'Name': full_name, 'Question': raw_for_user[0], 'Answer': raw_for_user[1]}
+        raw_results.append(current_raw)
 
         processed_for_user_db = cur.execute(
-            "SELECT condition, month, year FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
+            "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
         processed_for_user = processed_for_user_db.fetchall()
-        processed_results[full_name] = processed_for_user
+        current_processed = {'Name': full_name, 'TestResult': processed_for_user[0]}
+        processed_results.append(current_processed)
 
     # Здесь просто дёргаем все результаты, можно раскомментировать и будет печатать в консоль ¯\_(ツ)_/¯
     # result_raw = cur.execute(
@@ -162,7 +166,7 @@ def results(request):
     # print(all_users)
     # processed_array = make_results(processed)
 
-    res = {"Name": raw_results}
+    res = {"Results": raw_results}
     return render(request, "results.html", context=res)
 
 
