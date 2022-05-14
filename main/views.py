@@ -11,6 +11,13 @@ import sqlite3
 con = sqlite3.connect('db.sqlite3', check_same_thread=False)
 cur = con.cursor()
 
+
+# Нужно это раскомментировать, запустить один раз, остановить, закомментировать обратно
+# cur.execute("BEGIN TRANSACTION; ")
+# cur.execute("DELETE FROM main_questions")
+# cur.execute("DELETE FROM main_rawquestions")
+# cur.execute("COMMIT; ")
+
 questions = ["Обычные обязанности напрягают меня больше чем обычно?",
                  "Я чувствую, что многие на работе открыто конкурируют со мной.",
                  "Могу и накричать. Потом стыдно. Раньше так не было.",
@@ -30,6 +37,12 @@ questions = ["Обычные обязанности напрягают меня 
                  "Я становлюсь нечувствительным к проблемам и страданиям других.",
                  "Я буквально заставляю себя каждый день идти на работу.",
                  "Я все принимаю близко к сердцу."]
+
+answers = ["Совершенно неверно",
+               "Скорее неверно",
+               "Точно не могу сказать",
+               "Скорее верно",
+               "Совершенно верно"]
 
 
 class MyView(TemplateView):
@@ -63,7 +76,7 @@ class MyView(TemplateView):
                 absolutely_correct = absolutely_correct + 1
             cur.execute("BEGIN TRANSACTION; ")
             cur.execute(
-                "INSERT INTO main_rawquestions VALUES (NULL, '%s', '%s', '%s', '%s', '%s')" % (username, questions[i], arr[i], month, year))
+                "INSERT INTO main_rawquestions (id, employee_login, question, answer, month, year) VALUES (NULL, '%s', '%d', '%d', '%d', '%d')" % (username, i, int(arr[i]), int(month), int(year)))
             cur.execute("COMMIT;")
 
         result = ""
@@ -97,7 +110,7 @@ class MyView(TemplateView):
         print("Сотрудник: ", username, "\nРезультат: ", result)
         cur.execute("BEGIN TRANSACTION; ")
         cur.execute(
-            "INSERT INTO main_questions VALUES (NULL, '%s', '%s', '%s', '%s');" % (username, result, month, year))
+            "INSERT INTO main_questions (id, employee_login, condition, month, year) VALUES (NULL, '%s', '%s', '%d', '%d');" % (username, result, int(month), int(year)))
         cur.execute("COMMIT;")
         return render(request, 'home.html')
 
@@ -130,45 +143,36 @@ def results(request):
     month = datetime.now().month
     year = datetime.now().year
 
-    raw_results = []
-    processed_results = []
+    res = {"Names": [], "Questions": questions, "Answers": [], "Results": []}
 
     for user_info in all_users:
         username = user_info['username']
         first_name = user_info['first_name']
         last_name = user_info['last_name']
         full_name = first_name + " " + last_name
+        res["Names"].append(full_name)
+        ans = [-1 for i in range(19)]
 
         raw_db = cur.execute(
-            "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
+            "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (username, int(month), int(year)))
         raw_for_user = raw_db.fetchall()
-        for info in raw_for_user:
-            current_raw = {'Name': full_name, 'Question': info[0], 'Answer': info[1]}
-            raw_results.append(current_raw)
+        print(raw_for_user)
 
         processed_for_user_db = cur.execute(
-            "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
+            "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (
+            username, int(month), int(year)))
         processed_for_user = processed_for_user_db.fetchall()
+        print(processed_for_user)
+
+        for info in raw_for_user:
+            ans[info[0]] = answers[info[1]]
+        res["Answers"].append(ans)
+
         for info in processed_for_user:
-            current_processed = {'Name': full_name, 'TestResult': info[0]}
-            processed_results.append(current_processed)
+            res["Results"].append(info[0])
 
-    # Здесь просто дёргаем все результаты, можно раскомментировать и будет печатать в консоль ¯\_(ツ)_/¯
-    # result_raw = cur.execute(
-    #     "SELECT * FROM main_rawquestions WHERE month='%s' AND year='%s'" % (month, year))
-    # raw = result_raw.fetchall()
-    # print(raw)
-    # raw_array = make_results(raw)
-    #
-    # processed_result = cur.execute(
-    #     "SELECT * FROM main_questions WHERE month='%s' AND year='%s'" % (month, year)
-    # )
-    # processed = processed_result.fetchall()
-    # print(processed)
-    # print(all_users)
-    # processed_array = make_results(processed)
+        print(res)
 
-    res = {"Results": raw_results}
     return render(request, "results.html", context=res)
 
 
