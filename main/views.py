@@ -142,14 +142,16 @@ def results(request):
         raw_db = cur.execute(
             "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
         raw_for_user = raw_db.fetchall()
-        current_raw = {'Name': full_name, 'Question': raw_for_user[0], 'Answer': raw_for_user[1]}
-        raw_results.append(current_raw)
+        for info in raw_for_user:
+            current_raw = {'Name': full_name, 'Question': info[0], 'Answer': info[1]}
+            raw_results.append(current_raw)
 
         processed_for_user_db = cur.execute(
             "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%s' AND year='%s');" % (username, month, year))
         processed_for_user = processed_for_user_db.fetchall()
-        current_processed = {'Name': full_name, 'TestResult': processed_for_user[0]}
-        processed_results.append(current_processed)
+        for info in processed_for_user:
+            current_processed = {'Name': full_name, 'TestResult': info[0]}
+            processed_results.append(current_processed)
 
     # Здесь просто дёргаем все результаты, можно раскомментировать и будет печатать в консоль ¯\_(ツ)_/¯
     # result_raw = cur.execute(
