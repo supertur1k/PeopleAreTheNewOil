@@ -143,32 +143,36 @@ def results(request):
     month = datetime.now().month
     year = datetime.now().year
 
-    raw_results = {}
-    processed_results = {}
+    res = {"Names": [], "Questions": questions, "Answers": [], "Results": []}
 
     for user_info in all_users:
         username = user_info['username']
         first_name = user_info['first_name']
         last_name = user_info['last_name']
         full_name = first_name + " " + last_name
+        res["Names"].append(full_name)
+        ans = [-1 for i in range(19)]
 
         raw_db = cur.execute(
             "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (username, int(month), int(year)))
         raw_for_user = raw_db.fetchall()
-        raw_results[full_name] = []
-        for info in raw_for_user:
-            current_raw = {'Question': questions[info[0]], 'Answer': answers[info[1]]}
-            raw_results[full_name].append(current_raw)
+        print(raw_for_user)
 
         processed_for_user_db = cur.execute(
-            "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (username, int(month), int(year)))
+            "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (
+            username, int(month), int(year)))
         processed_for_user = processed_for_user_db.fetchall()
-        processed_results[full_name] = []
-        for info in processed_for_user:
-            current_processed = {'TestResult': info[0]}
-            processed_results[full_name].append(current_processed)
+        print(processed_for_user)
 
-    res = {"Raw_results": raw_results, "Processed_results" : processed_results}
+        for info in raw_for_user:
+            ans[info[0]] = answers[info[1]]
+        res["Answers"].append(ans)
+
+        for info in processed_for_user:
+            res["Results"].append(info[0])
+
+        print(res)
+
     return render(request, "results.html", context=res)
 
 
