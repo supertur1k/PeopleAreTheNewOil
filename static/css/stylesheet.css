@@ -100,6 +100,13 @@ h1 {
     font-weight: 300;
     font-size: 3em;
 }
+h2 {
+    text-align: center;
+    color: rgb(109, 170, 164);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 1em;
+}
 img {
     margin: 0 auto;
 }

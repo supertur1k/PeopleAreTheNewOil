@@ -143,15 +143,16 @@ def results(request):
     month = datetime.now().month
     year = datetime.now().year
 
-    res = {"Names": [], "Questions": questions, "Answers": [], "Results": []}
+    res = {"Names": []}
+
+    i = 0
 
     for user_info in all_users:
         username = user_info['username']
         first_name = user_info['first_name']
         last_name = user_info['last_name']
         full_name = first_name + " " + last_name
-        res["Names"].append(full_name)
-        ans = [-1 for i in range(19)]
+        people = [full_name, [[questions[i], "Тест не пройден"] for i in range(19)], i]
 
         raw_db = cur.execute(
             "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (username, int(month), int(year)))
@@ -164,14 +165,16 @@ def results(request):
         processed_for_user = processed_for_user_db.fetchall()
         print(processed_for_user)
 
-        for info in raw_for_user:
-            ans[info[0]] = answers[info[1]]
-        res["Answers"].append(ans)
+        for i in range(min(len(raw_for_user), 19)):
+            people[1][i] = [questions[i], answers[raw_for_user[i][1]]]
 
         for info in processed_for_user:
-            res["Results"].append(info[0])
+            people.append(info[0])
+
+        res["Names"].append(people)
 
         print(res)
+        i += 1
 
     return render(request, "results.html", context=res)
 
