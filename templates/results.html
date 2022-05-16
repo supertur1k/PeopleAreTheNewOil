@@ -8,32 +8,25 @@
     <style>
         .modal {
       position: fixed;
-      /* фиксированное положение */
       top: 0;
       right: 0;
       bottom: 0;
       left: 0;
       background: rgba(0, 0, 0, 0.5);
-      /* цвет фона */
       z-index: 1050;
       opacity: 0;
-      /* по умолчанию модальное окно прозрачно */
       -webkit-transition: opacity 400ms ease-in;
       -moz-transition: opacity 400ms ease-in;
       transition: opacity 400ms ease-in;
-      /* анимация перехода */
       pointer-events: none;
-      /* элемент невидим для событий мыши */
     }
 
-    /* при отображении модального окно */
     .modal:target {
       opacity: 1;
       pointer-events: auto;
       overflow-y: auto;
     }
 
-    /* ширина модального окна и его отступы от экрана */
     .modal-dialog {
       position: relative;
       width: auto;
@@ -47,7 +40,6 @@
       }
     }
 
-    /* свойства для блока, содержащего контент модального окна */
     .modal-content {
       position: relative;
       display: -webkit-box;
@@ -74,7 +66,6 @@
       }
     }
 
-    /* свойства для заголовка модального окна */
     .modal-header {
       display: -webkit-box;
       display: -webkit-flex;
@@ -118,7 +109,6 @@
     font-size: 1em;
     }
 
-    /* свойства для кнопки "Закрыть" */
     .close {
       float: right;
       font-family: sans-serif;
@@ -131,7 +121,6 @@
       text-decoration: none;
     }
 
-    /* свойства для кнопки "Закрыть" при нахождении её в фокусе или наведении */
     .close:focus,
     .close:hover {
       color: #000;
@@ -140,7 +129,6 @@
       opacity: .75;
     }
 
-    /* свойства для блока, содержащего основное содержимое окна */
     .modal-body {
       position: relative;
       -webkit-box-flex: 1;
@@ -217,7 +205,7 @@
         <label for="nav-toggle" class="nav-toggle" onclick></label>
         <ul>
             <li> <a href="{% url 'profile-master' %}">Профиль</a>
-            <li> <a href="{% url 'slave' %}">Пройти тест</a>
+            <li> <a href="{% url 'test' %}">Пройти тест</a>
             <li> <a href="http://127.0.0.1:8000/">На главную</a>
             <li> <a href="{% url 'logout' %}">Выйти</a>
         </ul>
