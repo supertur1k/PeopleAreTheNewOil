@@ -11,3 +11,5 @@ urlpatterns = [
     path('', views.home),
     path('master', views.master),
 ]
+
+
