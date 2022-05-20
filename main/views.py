@@ -157,13 +157,11 @@ def results(request):
         raw_db = cur.execute(
             "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (username, int(month), int(year)))
         raw_for_user = raw_db.fetchall()
-        print(raw_for_user)
 
         processed_for_user_db = cur.execute(
             "SELECT condition FROM (SELECT * FROM main_questions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (
             username, int(month), int(year)))
         processed_for_user = processed_for_user_db.fetchall()
-        print(processed_for_user)
 
         for i in range(min(len(raw_for_user), 19)):
             people[1][i] = [questions[i], answers[raw_for_user[i][1]]]
@@ -173,7 +171,6 @@ def results(request):
 
         res["Names"].append(people)
 
-        print(res)
         i += 1
 
     return render(request, "results.html", context=res)
