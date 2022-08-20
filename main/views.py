@@ -11,6 +11,35 @@ import sqlite3
 con = sqlite3.connect('db.sqlite3', check_same_thread=False)
 cur = con.cursor()
 
+temp = cur.execute("SELECT * FROM all_questions")
+questions = [i[0] for i in temp]
+
+# questions = ["Обычные обязанности напрягают меня больше чем обычно?",
+#              "Я чувствую, что многие на работе открыто конкурируют со мной.",
+#              "Могу и накричать. Потом стыдно. Раньше так не было.",
+#              "Я боюсь все испортить в работе и всех подвести.",
+#              "Выполняю работу как робот, иногда не могу остановиться.",
+#              "Меня напрягает, если надо выполнять работу вместе с кем-то.",
+#              "Меня не радует проделанная работа.",
+#              "В последнее время, мне часто приходится оправдываться за свою неадекватную реакцию.",
+#              "Я чувствую себя колхозной лошадью, которая работает больше всех и никогда не станет председателем.",
+#              "Я чувствую, что отвечаю на вопросы случайным образом.",
+#              "В последнее время я не очень охотно присоединяюсь к эмоциям других.",
+#              "Мне стало проще сделать все самостоятельно, чем просить кого-то.",
+#              "У меня такое чувство, что мой организм предательски активно протестует против моего режима работы и старается выбить меня из колеи.",
+#              "Меня чаще стало тревожить, правильно ли я выполняю работу.",
+#              "У меня нет сил ни с кем общаться на работе, делиться своими новостями, печалями и радостями.",
+#              "Я постоянно чувствую себя уставшим.",
+#              "Я становлюсь нечувствительным к проблемам и страданиям других.",
+#              "Я буквально заставляю себя каждый день идти на работу.",
+#              "Я все принимаю близко к сердцу."]
+
+
+# cur.execute("CREATE TABLE all_questions (question varchar(255));")
+# for i in questions:
+#    cur.execute("INSERT INTO all_questions (question) VALUES ('%s');" % (i))
+#    cur.execute("COMMIT;")
+
 
 # Нужно это раскомментировать, запустить один раз, остановить, закомментировать обратно
 # cur.execute("BEGIN TRANSACTION; ")
@@ -18,25 +47,6 @@ cur = con.cursor()
 # cur.execute("DELETE FROM main_rawquestions")
 # cur.execute("COMMIT; ")
 
-questions = ["Обычные обязанности напрягают меня больше чем обычно?",
-                 "Я чувствую, что многие на работе открыто конкурируют со мной.",
-                 "Могу и накричать. Потом стыдно. Раньше так не было.",
-                 "Я боюсь все испортить в работе и всех подвести.",
-                 "Выполняю работу как робот, иногда не могу остановиться.",
-                 "Меня напрягает, если надо выполнять работу вместе с кем-то.",
-                 "Меня не радует проделанная работа.",
-                 "В последнее время, мне часто приходится оправдываться за свою неадекватную реакцию.",
-                 "Я чувствую себя колхозной лошадью, которая работает больше всех и никогда не станет председателем.",
-                 "Я чувствую, что отвечаю на вопросы случайным образом.",
-                 "В последнее время я не очень охотно присоединяюсь к эмоциям других.",
-                 "Мне стало проще сделать все самостоятельно, чем просить кого-то.",
-                 "У меня такое чувство, что мой организм предательски активно протестует против моего режима работы и старается выбить меня из колеи.",
-                 "Меня чаще стало тревожить, правильно ли я выполняю работу.",
-                 "У меня нет сил ни с кем общаться на работе, делиться своими новостями, печалями и радостями.",
-                 "Я постоянно чувствую себя уставшим.",
-                 "Я становлюсь нечувствительным к проблемам и страданиям других.",
-                 "Я буквально заставляю себя каждый день идти на работу.",
-                 "Я все принимаю близко к сердцу."]
 
 answers = ["Совершенно неверно",
                "Скорее неверно",
@@ -62,10 +72,12 @@ class MyView(TemplateView):
         absolutely_correct = 0
         month = datetime.now().month
         year = datetime.now().year
+        size = len(questions)
 
-        for i in range(19):
+        for i in range(size):
             if arr[i] == "0":
                 completely_wrong = completely_wrong + 1
+                probably_wrong = probably_wrong + 1
             if arr[i] == "1":
                 probably_wrong = probably_wrong + 1
             if arr[i] == "2":
@@ -74,6 +86,7 @@ class MyView(TemplateView):
                 probably_correct = probably_correct + 1
             if arr[i] == "4":
                 absolutely_correct = absolutely_correct + 1
+                probably_correct = probably_correct + 1
             cur.execute("BEGIN TRANSACTION; ")
             cur.execute(
                 "INSERT INTO main_rawquestions (id, employee_login, question, answer, month, year) VALUES (NULL, '%s', '%d', '%d', '%d', '%d')" % (username, i, int(arr[i]), int(month), int(year)))
@@ -81,23 +94,23 @@ class MyView(TemplateView):
 
         result = ""
 
-        if completely_wrong > 14 or probably_wrong > 18:
+        if completely_wrong > (size * 0.75) or probably_wrong > (size * 0.9):
             result = "Сотрудник абсолютно здоров психолигчески и готов к продуктивной работе!"
 
-        elif absolutely_correct > 14 or probably_correct > 18:
+        elif absolutely_correct > (size * 0.75) or probably_correct > (size * 0.9):
             result = "Сотрудник сталкивается с большими трудностями в работе. Система выявида у сотрудника " \
                      "признаки эмоцианального выгорания. Настоятельно рекомендуем работодателю провести беседу. " \
                      "Возможные сценарии: смена коллектива, отпуск, изменение условий работы. "
 
-        elif can_not_say > 14:
+        elif can_not_say > (size * 0.75):
             result = "Система не может однозначно выявить симптомы эмоционального выгорания у сотрудника. " \
                      "Рекомендуется консультация специалиста"
 
-        elif 14 > completely_wrong > 8 or 18 > probably_wrong > 12:
+        elif (size * 0.75) > completely_wrong > (size * 0.4) or (size * 0.9) > probably_wrong > (size * 0.6):
             result = "Сотрудник достаточно хорошо справляется с работой, но к увеличению нагрузок с сохранением " \
                      "текущих условий труда не готов."
 
-        elif 14 > absolutely_correct > 8 or 18 > probably_correct > 12:
+        elif (size * 0.75) > absolutely_correct > (size * 0.4) or (size * 0.9) > probably_correct > (size * 0.6):
             result = "Ярко выраженных симптомов эмоционального выгорания не выявлено, однако, работодателю " \
                      "рекомендуется обратить внимания на условия труда своего сотрудника. В случае сохранения " \
                      "текущих условий без предоставления отпуска, в ближайшем будущем есть риск просадки в" \
@@ -152,7 +165,7 @@ def results(request):
         first_name = user_info['first_name']
         last_name = user_info['last_name']
         full_name = first_name + " " + last_name
-        people = [full_name, [[questions[i], "Тест не пройден"] for i in range(19)], i]
+        people = [full_name, [[questions[i], "Тест не пройден"] for i in range(len(questions))], i]
 
         raw_db = cur.execute(
             "SELECT question, answer FROM (SELECT * FROM main_rawquestions WHERE employee_login='%s' AND month='%d' AND year='%d');" % (username, int(month), int(year)))
@@ -165,7 +178,7 @@ def results(request):
         processed_for_user = processed_for_user_db.fetchall()
         print(processed_for_user)
 
-        for i in range(min(len(raw_for_user), 19)):
+        for i in range(min(len(raw_for_user), len(questions))):
             people[1][i] = [questions[i], answers[raw_for_user[i][1]]]
 
         for info in processed_for_user:
